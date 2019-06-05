@@ -3,7 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
+import { WelcomeComponent } from './home/welcome.component';
+import { ProductModule } from './products/product.module';
+
 
 /* Features Modules*/
 
@@ -11,13 +13,14 @@ import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    WelcomeComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ProductModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
