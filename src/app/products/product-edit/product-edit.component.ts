@@ -1,28 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { MessageService } from '../../messages/message.service';
 
 import { Product } from '../product';
 import { ProductService } from '../product.service';
+import { RouterStateSnapshot, ActivatedRoute } from '@angular/router';
 
 @Component({
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.css']
 })
-export class ProductEditComponent {
+export class ProductEditComponent implements OnInit {
   pageTitle = 'Product Edit';
   errorMessage: string;
 
   product: Product;
 
   constructor(private productService: ProductService,
-              private messageService: MessageService) { }
+    // tslint:disable-next-line: align
+    private messageService: MessageService,
+    // tslint:disable-next-line: align
+    private router: ActivatedRoute) { }
+
+  ngOnInit(): void {
+    const id = +this.router.snapshot.paramMap.get('id');
+    this.getProduct(id);
+  }
 
   getProduct(id: number): void {
     this.productService.getProduct(id)
       .subscribe(
         (product: Product) => this.onProductRetrieved(product),
-        (error: any) => this.errorMessage = <any>error
+        (error: any) => this.errorMessage = error
       );
   }
 
@@ -49,7 +58,7 @@ export class ProductEditComponent {
         this.productService.deleteProduct(this.product.id)
           .subscribe(
             () => this.onSaveComplete(`${this.product.productName} was deleted`),
-            (error: any) => this.errorMessage = <any>error
+            (error: any) => this.errorMessage = error as any
           );
       }
     }
@@ -61,13 +70,13 @@ export class ProductEditComponent {
         this.productService.createProduct(this.product)
           .subscribe(
             () => this.onSaveComplete(`The new ${this.product.productName} was saved`),
-            (error: any) => this.errorMessage = <any>error
+            (error: any) => this.errorMessage = error as any
           );
       } else {
         this.productService.updateProduct(this.product)
           .subscribe(
             () => this.onSaveComplete(`The updated ${this.product.productName} was saved`),
-            (error: any) => this.errorMessage = <any>error
+            (error: any) => this.errorMessage = error as any
           );
       }
     } else {
